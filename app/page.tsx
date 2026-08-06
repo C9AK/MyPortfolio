@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring, Variants } from 'framer-motion';
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -39,17 +39,18 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-  const scrollReveal = {
+  // FIXED: Added the :Variants type to these objects for strict TypeScript compliance
+  const scrollReveal: Variants = {
     hidden: { opacity: 0, y: 40 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  const terminalContainer = {
+  const terminalContainer: Variants = {
     hidden: { opacity: 1 },
     show: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 1.2 } }
   };
   
-  const terminalLine = {
+  const terminalLine: Variants = {
     hidden: { opacity: 0, display: "none" },
     show: { opacity: 1, display: "block" }
   };
@@ -92,7 +93,7 @@ export default function Home() {
         <div className="w-px h-4 bg-neutral-800"></div>
 
         <a 
-          href="#" // Add your CV PDF link here later
+          href="#" 
           onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
           className="text-xs font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors flex items-center gap-2 group"
         >
@@ -383,7 +384,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* UPGRADED ACADEMIC NODE */}
             <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.4 }} variants={scrollReveal} className="relative pl-8 md:pl-0">
               <div className="md:hidden absolute left-0 top-0 bottom-0 w-px bg-neutral-800"></div>
               <div className="md:grid md:grid-cols-12 gap-8 items-start group">
