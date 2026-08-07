@@ -86,14 +86,16 @@ export default function Home() {
         <div className="w-px h-4 bg-neutral-800 hidden md:block"></div>
         
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-neutral-300 uppercase tracking-widest">📍 Amman, JO</span>
+          <span className="text-xs font-bold text-neutral-300 uppercase tracking-widest">📍 Amman, JO || Khobar, KSA</span>
           {mounted && <span className="text-xs font-mono text-blue-400 tracking-wider bg-blue-900/20 px-2 py-1 rounded">{currentTime}</span>}
         </div>
 
         <div className="w-px h-4 bg-neutral-800"></div>
 
         <a 
-          href="#" 
+          href="/Ahmad_Alkhouja_CV.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer"
           onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
           className="text-xs font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors flex items-center gap-2 group"
         >
