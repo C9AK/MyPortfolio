@@ -1,5 +1,5 @@
 "use client";
-
+import Link from 'next/link';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring, useMotionValue, useTransform, Variants, AnimatePresence } from 'framer-motion';
 
@@ -69,15 +69,15 @@ function MagneticWrapper({ children, className = "" }: { children: React.ReactNo
   );
 }
 
-// --- NEW HERO 3D VISUALIZER COMPONENT (FIXED DELAY & SIZE) ---
+// --- NEW HERO 3D VISUALIZER COMPONENT ---
 const Hero3DVisualizer = () => {
   return (
     <div className="w-full h-48 md:h-56 lg:col-span-2 flex items-center justify-center pointer-events-none mb-8 mt-12 md:mt-0 z-20" style={{ perspective: "1200px" }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }} // REMOVED the 2.5s delay!
-        className="relative w-full max-w-5xl flex items-center justify-center scale-110 md:scale-125" // Made it significantly larger
+        transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }} 
+        className="relative w-full max-w-5xl flex items-center justify-center scale-110 md:scale-125"
         style={{ transformStyle: "preserve-3d", transform: "rotateX(65deg) rotateZ(-15deg)" }}
       >
         <div className="absolute w-full h-[2px] bg-neutral-800/80 rounded-full" />
@@ -160,7 +160,7 @@ function TiltCard({ children, className = "", tiltAmount = 15, glareColor = "rgb
         className={`relative transition-all duration-200 ease-out ${className}`}
       >
         <motion.div
-          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none"
+          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30"
           style={{ background: `radial-gradient(circle at ${glareX} ${glareY}, ${glareColor}, transparent 70%)` }}
         />
         {children}
@@ -173,25 +173,15 @@ export default function Home() {
   const [booting, setBooting] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
-    setMounted(true);
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", handleMouseMove);
     
-    const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Amman', hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit'
-      }));
-    }, 1000);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      clearInterval(timer);
     };
   }, []);
 
@@ -204,22 +194,60 @@ export default function Home() {
   };
   const terminalContainer: Variants = {
     hidden: { opacity: 1 },
-    show: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 1.0 } } // Shorter delay so it types immediately 
+    show: { opacity: 1, transition: { staggerChildren: 0.8, delayChildren: 1.0 } }
   };
   const terminalLine: Variants = {
     hidden: { opacity: 0, display: "none" },
     show: { opacity: 1, display: "block" }
   };
 
-  const credentials = [
-    "Google Project Management Professional",
-    "AWS Cloud Foundations",
-    "IBM Cloud Essentials",
-    "IBM AI App Development (Python/Flask)",
-    "IBM DevOps Practices",
-    "Hazmat Awareness & Load Refusal",
-    "Entry-Level Driver Safety (ELDT)"
+ const credentials = [
+    { title: "Google AI Professional", issuer: "Google", id: "I9AQ0P3GCGFE", category: "AI & ML" },
+    { title: "IBM Generative AI Engineering", issuer: "IBM", category: "AI & ML" },
+    { title: "AWS Cloud Essentials", issuer: "AWS", category: "Cloud & DevOps" },
+    { title: "AWS Cloud Foundations", issuer: "AWS", category: "Cloud & DevOps" },
+    { title: "Generative AI Applications with RAG and LangChain", issuer: "IBM", category: "AI & ML" },
+    { title: "Generative AI Advanced Fine-Tuning for LLMs", issuer: "IBM", category: "AI & ML" },
+    { title: "Generative AI and LLMs: Architecture and Data Preparation", issuer: "IBM", category: "AI & ML" },
+    { title: "AI for App Deployment", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "AI for App Building", issuer: "IBM", category: "AI & ML" },
+    { title: "Generative AI: Prompt Engineering Basics", issuer: "IBM", category: "AI & ML" },
+    { title: "Building Generative AI-Powered Applications with Python", issuer: "IBM", category: "AI & ML" },
+    { title: "Data Analysis with Python", issuer: "IBM", category: "Data & Systems" },
+    { title: "Machine Learning with Python", issuer: "IBM", category: "AI & ML" },
+    { title: "AI for App Deployment", issuer: "Google", category: "Cloud & DevOps" },
+    { title: "AI for App Building", issuer: "Google", category: "AI & ML" },
+    { title: "AI for Data Analysis", issuer: "Google", category: "Data & Systems" },
+    { title: "AI for Content Creation", issuer: "Google", category: "AI & ML" },
+    { title: "AI for Writing and Communicating", issuer: "Google", category: "AI & ML" },
+    { title: "AI for Research and Insights", issuer: "Google", category: "AI & ML" },
+    { title: "AI for Brainstorming and Planning", issuer: "Google", category: "Project Management" },
+    { title: "GitHub Essentials", issuer: "GitHub", category: "Cloud & DevOps" },
+    { title: "Google Project Management Professional", issuer: "Google", id: "QBUG8PKAG1QA", category: "Project Management" },
+    { title: "Capstone: Applying Project Management in the Real World", issuer: "Google", id: "42T6WRJKB26T", category: "Project Management" },
+    { title: "Agile Project Management", issuer: "Google", id: "FF1KVFSV6BPC", category: "Project Management" },
+    { title: "Project Execution: Running the Project", issuer: "Google", id: "0WO46CQR6NDY", category: "Project Management" },
+    { title: "Project Planning: Putting It All Together", issuer: "Google", id: "KW7Q7G9MDJIT", category: "Project Management" },
+    { title: "Project Initiation: Starting a Successful Project", issuer: "Google", id: "CWXL7EZASZ90", category: "Project Management" },
+    { title: "Foundations of Project Management", issuer: "Google", id: "YXTMCYDDCKX1", category: "Project Management" },
+    { title: "Python for Data Science and AI", issuer: "IBM", category: "Data & Systems" },
+    { title: "Application Development using Microservices and Serverless", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "Introduction to Test and Behavior Driven Development", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "Continuous Integration and Continuous Delivery (CI/CD)", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "Application Security for Developers and DevOps Professionals", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "Monitoring and Observability for Development and DevOps", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "IBM DevOps and Software Engineering", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "DevOps Capstone Project", issuer: "IBM", category: "Cloud & DevOps" },
+    { title: "Containers with Docker, Kubernetes & OpenShift", issuer: "IBM", id: "WRONIQQ16D2P", category: "Cloud & DevOps" },
+    { title: "Developing AI Applications with Python and Flask", issuer: "IBM", id: "EDUKLTM3XBGC", category: "AI & ML" },
+    { title: "Cloud Essentials", issuer: "IBM", category: "Cloud & DevOps" }
   ];
+
+  const [activeCertCategory, setActiveCertCategory] = useState("ALL");
+  const certCategories = ["ALL", "AI & ML", "Cloud & DevOps", "Project Management", "Data & Systems"];
+  const filteredCredentials = activeCertCategory === "ALL" 
+    ? credentials 
+    : credentials.filter(c => c.category === activeCertCategory);
 
   return (
     <>
@@ -230,38 +258,6 @@ export default function Home() {
       {!booting && (
         <main className="relative font-sans antialiased bg-neutral-950 overflow-hidden text-white selection:bg-white selection:text-black cursor-none pb-24">
           
-          {/* FLOATING EXECUTIVE DOCK */}
-          <motion.div 
-            initial={{ y: 100, opacity: 0, x: "-50%" }} 
-            animate={{ y: 0, opacity: 1, x: "-50%" }} 
-            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-            className="fixed bottom-6 left-1/2 z-[100] bg-neutral-900/80 backdrop-blur-xl border border-neutral-800 rounded-full px-6 py-3 flex items-center gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
-          >
-            <div className="flex items-center gap-2 hidden md:flex">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-xs font-mono text-neutral-400">SYS: ONLINE</span>
-            </div>
-            <div className="w-px h-4 bg-neutral-800 hidden md:block"></div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-neutral-300 uppercase tracking-widest">📍 Amman, JO</span>
-              {mounted && <span className="text-xs font-mono text-blue-400 tracking-wider bg-blue-900/20 px-2 py-1 rounded">{currentTime}</span>}
-            </div>
-            <div className="w-px h-4 bg-neutral-800"></div>
-            <a 
-              href="/Ahmad_Alkhouja_CV.pdf" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-              className="text-xs font-bold text-white uppercase tracking-widest hover:text-blue-400 transition-colors flex items-center gap-2 group"
-            >
-              Download CV 
-              <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            </a>
-          </motion.div>
-
           {/* CUSTOM CURSOR & PROGRESS BAR */}
           <motion.div 
             className="hidden md:flex fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-white pointer-events-none z-[110] mix-blend-difference items-center justify-center"
@@ -281,11 +277,11 @@ export default function Home() {
           {/* NAVIGATION */}
           <motion.nav initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }} className="fixed top-0 w-full z-50 bg-neutral-950/70 backdrop-blur-lg border-b border-neutral-800">
             <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-              <div className="font-bold text-xl tracking-tighter">AA.</div>
+              <div className="font-bold text-xl tracking-tighter">AK.</div>
               <div className="hidden md:flex gap-8 text-sm font-semibold tracking-widest text-neutral-400 uppercase">
                 <a href="#capabilities" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="hover:text-white transition-colors">Capabilities</a>
                 <a href="#methodology" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="hover:text-white transition-colors">Process</a>
-                <a href="#projects" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="hover:text-white transition-colors">Initiatives</a>
+                <a href="#projects" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="hover:text-white transition-colors">Projects</a>
                 <a href="#experience" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="hover:text-white transition-colors">Experience</a>
               </div>
               <a href="https://www.instagram.com/YOURMAINMANC9" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="px-5 py-2 bg-white text-black text-xs font-bold tracking-widest uppercase hover:bg-neutral-300 transition-colors">Contact</a>
@@ -301,7 +297,7 @@ export default function Home() {
 
               <motion.div initial="hidden" animate="show" variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.2 } } }} className="space-y-6 z-30 relative">
                 <motion.div variants={scrollReveal}><h1 className="text-6xl md:text-8xl lg:text-[100px] font-extrabold tracking-tighter text-white leading-none">Ahmad <br/> Alkhouja.</h1></motion.div>
-                <motion.div variants={scrollReveal} className="flex gap-4 items-center"><div className="h-[1px] w-12 bg-neutral-500"></div><h2 className="text-xl md:text-2xl font-medium text-blue-400 tracking-widest uppercase">Technical Project Manager</h2></motion.div>
+                <motion.div variants={scrollReveal} className="flex gap-4 items-center"><div className="h-[1px] w-12 bg-neutral-500"></div><h2 className="text-xl md:text-2xl font-medium text-blue-400 tracking-widest uppercase">AI Automation Lead & Technical Project Manager</h2></motion.div>
                 <motion.div variants={scrollReveal} className="pt-8 flex gap-4">
                   <MagneticWrapper>
                     <a href="#projects" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-colors duration-200 bg-neutral-900 border border-neutral-700 hover:bg-white hover:text-black hover:border-white">
@@ -329,7 +325,7 @@ export default function Home() {
           {/* METRICS BAR */}
           <section className="relative z-10 border-y border-neutral-800 bg-neutral-900/50 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-neutral-800 text-center">
-              <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal}><h4 className="text-4xl md:text-5xl font-black text-white">20+</h4><p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">Certifications</p></motion.div>
+              <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal}><h4 className="text-4xl md:text-5xl font-black text-white">40+</h4><p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">Certifications</p></motion.div>
               <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal}><h4 className="text-4xl md:text-5xl font-black text-white">100%</h4><p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">Delivery Rate</p></motion.div>
               <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal}><h4 className="text-4xl md:text-5xl font-black text-white">Agile</h4><p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">Methodology</p></motion.div>
               <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal}><h4 className="text-4xl md:text-5xl font-black text-white">Full</h4><p className="text-xs text-neutral-500 font-bold tracking-widest uppercase mt-2">Stack Engineering</p></motion.div>
@@ -419,101 +415,215 @@ export default function Home() {
             </motion.div>
           </section>
 
-          {/* FEATURED ARCHITECTURE WITH 3D ISOMETRIC MODELS */}
-          <section id="projects" className="relative z-10 px-8 md:px-24 py-32 bg-neutral-900">
-            <div className="max-w-6xl mx-auto">
-              <motion.h3 initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal} className="text-sm font-bold text-neutral-500 uppercase tracking-widest mb-16 text-center">
-                Featured Architecture
-              </motion.h3>
-              
-              <div className="grid md:grid-cols-2 gap-8">
-                <TiltCard 
-                  tiltAmount={10} glareColor="rgba(59,130,246,0.15)"
-                  onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                  className="group flex flex-col p-0 border border-neutral-800 bg-neutral-950/80 backdrop-blur-md hover:border-blue-500/50 transition-colors duration-500 rounded-2xl cursor-pointer shadow-2xl overflow-hidden"
-                >
-                  <div className="h-64 w-full bg-neutral-900 border-b border-neutral-800 flex items-center justify-center overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative w-full h-full flex items-center justify-center group-hover:scale-110 transition-transform duration-700" style={{ transformStyle: "preserve-3d", transform: "rotateX(60deg) rotateZ(-45deg)" }}>
-                      <motion.div animate={{ z: [0, 15, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute w-32 h-32 border border-blue-500/30 bg-blue-900/20 rounded-xl flex items-end justify-end p-2 text-[10px] text-blue-500/50 font-mono backdrop-blur-sm">DATABASE</motion.div>
-                      <motion.div animate={{ z: [50, 65, 50] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }} className="absolute w-32 h-32 border border-blue-400/60 bg-blue-800/30 rounded-xl backdrop-blur-md flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.2)]"><div className="w-16 h-16 border border-blue-400/50 rounded-full flex items-center justify-center text-xs font-bold text-blue-300">API</div></motion.div>
-                      <motion.div animate={{ z: [100, 115, 100] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.4 }} className="absolute w-20 h-20 bg-blue-500 rounded-xl shadow-[0_0_40px_rgba(59,130,246,0.6)] flex flex-col items-center justify-center text-[10px] font-black text-black"><svg className="w-6 h-6 mb-1 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22l10-3 10 3L12 2z"/></svg>BOT</motion.div>
-                    </div>
-                  </div>
-                  <div className="p-8 relative z-10 flex-1 flex flex-col">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono tracking-widest rounded uppercase">Samsara API</span>
-                      <span className="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono tracking-widest rounded uppercase">Python</span>
-                      <span className="px-2 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono tracking-widest rounded uppercase">PostgreSQL</span>
-                    </div>
-                    <h4 className="text-2xl font-bold text-white mb-2">Fleet Tracking Telemetry</h4>
-                    <p className="text-neutral-400 text-sm leading-relaxed mb-8">Architected custom tracking automation by integrating the Samsara API with Telegram bots, streamlining logistics visibility and operational response times across global fleets.</p>
-                    <div className="mt-auto flex items-center text-blue-400 text-xs font-bold tracking-widest uppercase group-hover:translate-x-2 transition-transform">
-                      View Architecture <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                  </div>
-                </TiltCard>
+      {/* ENTER PROJECT VAULT REDIRECT */}
+      <section id="projects" className="relative z-10 px-8 md:px-24 py-40 bg-neutral-950 border-y border-neutral-800 flex flex-col items-center justify-center text-center overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none opacity-20" style={{ background: 'radial-gradient(circle at center, rgba(59,130,246,0.5), transparent 50%)' }}></div>
+        
+        <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.8 }} variants={scrollReveal} className="relative z-10 max-w-3xl mx-auto space-y-8">
+          <div className="flex justify-center items-center gap-3">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            </span>
+            <p className="text-xs font-mono text-blue-400 uppercase tracking-widest">Interactive 3D Environment</p>
+          </div>
+          
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white">
+            EXPLORE THE <br/>PROJECT VAULT.
+          </h2>
+          
+          <p className="text-neutral-400 text-lg leading-relaxed max-w-xl mx-auto">
+            Step into a dedicated, scroll-rendered 3D space to explore my software architecture, ML implementations, and full-stack solutions.
+          </p>
 
-                <TiltCard 
-                  tiltAmount={10} glareColor="rgba(16,185,129,0.15)"
-                  onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                  className="group flex flex-col p-0 border border-neutral-800 bg-neutral-950/80 backdrop-blur-md hover:border-emerald-500/50 transition-colors duration-500 rounded-2xl cursor-pointer shadow-2xl overflow-hidden"
-                >
-                  <div className="h-64 w-full bg-neutral-900 border-b border-neutral-800 flex items-center justify-center overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative w-full h-full flex items-center justify-center group-hover:scale-110 transition-transform duration-700" style={{ transformStyle: "preserve-3d", transform: "rotateX(60deg) rotateZ(-45deg)" }}>
-                      <motion.div animate={{ z: [0, 15, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} className="absolute w-32 h-32 border border-emerald-500/30 bg-emerald-900/20 rounded-xl flex items-end justify-end p-2 text-[10px] text-emerald-500/50 font-mono backdrop-blur-sm">AWS CLOUD</motion.div>
-                      <motion.div animate={{ z: [50, 65, 50] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.7 }} className="absolute w-32 h-32 border border-emerald-400/60 bg-emerald-800/30 rounded-xl backdrop-blur-md flex flex-col items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.2)] p-4 gap-2">
-                        <div className="w-full h-4 bg-emerald-400/20 rounded-sm"></div>
-                        <div className="w-full h-4 bg-emerald-400/20 rounded-sm"></div>
-                        <div className="w-2/3 h-4 bg-emerald-400/20 rounded-sm"></div>
-                      </motion.div>
-                      <motion.div animate={{ z: [100, 115, 100] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.9 }} className="absolute w-20 h-20 bg-emerald-400 rounded-xl shadow-[0_0_40px_rgba(16,185,129,0.6)] flex items-center justify-center text-[10px] font-black text-black">CLIENT</motion.div>
-                    </div>
-                  </div>
-                  <div className="p-8 relative z-10 flex-1 flex flex-col">
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono tracking-widest rounded uppercase">React.TS</span>
-                      <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono tracking-widest rounded uppercase">WordPress</span>
-                      <span className="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono tracking-widest rounded uppercase">AWS</span>
-                    </div>
-                    <h4 className="text-2xl font-bold text-white mb-2">Corporate Web Systems</h4>
-                    <p className="text-neutral-400 text-sm leading-relaxed mb-8">Managed and optimized corporate web presence utilizing WordPress and custom CSS, aligning front-end deployment with strategic marketing metrics and robust AWS cloud hosting.</p>
-                    <div className="mt-auto flex items-center text-emerald-400 text-xs font-bold tracking-widest uppercase group-hover:translate-x-2 transition-transform">
-                      View Architecture <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </div>
-                  </div>
-                </TiltCard>
-              </div>
-            </div>
-          </section>
+          <div className="pt-8 flex justify-center">
+            <MagneticWrapper>
+              <Link href="/projects" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group relative inline-flex items-center justify-center px-12 py-5 font-bold text-black transition-all duration-300 bg-white hover:bg-blue-500 hover:text-white shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)]">
+                ENTER ENVIRONMENT 
+                <svg className="w-5 h-5 ml-2 transition-transform duration-200 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </Link>
+            </MagneticWrapper>
+          </div>
+        </motion.div>
+      </section>
 
-          {/* CREDENTIALS & CERTIFICATIONS */}
+      {/* CREDENTIALS & CERTIFICATIONS */}
           <section className="relative z-10 px-8 md:px-24 py-32 bg-neutral-900 border-y border-neutral-800">
-            <motion.div className="max-w-6xl mx-auto" initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.2 }} variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } }}>
-              <div className="flex justify-between items-end mb-12">
-                <motion.h3 variants={scrollReveal} className="text-sm font-bold text-neutral-500 uppercase tracking-widest">
-                  Credentials & Certifications
-                </motion.h3>
-                <motion.div variants={scrollReveal} className="hidden md:block text-xs font-mono text-neutral-500">
-                  Showing 7 of 20 verified credentials
-                </motion.div>
+            <motion.div 
+              className="max-w-7xl mx-auto" 
+              initial="hidden" 
+              whileInView="show" 
+              viewport={{ once: false, amount: 0.1 }} 
+              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.05 } } }}
+            >
+              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12">
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+                    <motion.h3 variants={scrollReveal} className="text-xs font-mono text-neutral-400 uppercase tracking-[0.3em]">
+                      Verified Credentials Registry
+                    </motion.h3>
+                  </div>
+                  <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
+                    Technical Accreditations.
+                  </h2>
+                </div>
+
+                {/* CATEGORY SELECTOR & COUNTER */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full lg:w-auto">
+                  <div className="flex flex-wrap gap-2">
+                    {certCategories.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveCertCategory(cat)}
+                        onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)}
+                        className={`text-xs font-mono px-3.5 py-1.5 rounded-full border transition-all duration-300 ${
+                          activeCertCategory === cat
+                            ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
+                            : 'bg-neutral-950/80 text-neutral-400 border-neutral-800 hover:border-neutral-600 hover:text-white'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="text-xs font-mono text-neutral-400 bg-neutral-950 px-4 py-2 rounded-full border border-neutral-800 flex items-center justify-between sm:justify-start gap-2 whitespace-nowrap">
+                    <span className="text-neutral-500 uppercase">Showing</span>
+                    <span className="text-white font-bold">{filteredCredentials.length}</span>
+                    <span className="text-neutral-500">of</span>
+                    <span className="text-white font-bold">{credentials.length}</span>
+                    <span className="text-emerald-400 uppercase tracking-widest text-[10px]">Verified</span>
+                  </div>
+                </div>
               </div>
-              
+
+       {/* ACCREDITATIONS GRID */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {credentials.map((cert, index) => (
-                  <TiltCard 
-                    key={index} tiltAmount={12} glareColor="rgba(59,130,246,0.2)"
-                    onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
-                    className="p-6 bg-neutral-950/80 border border-neutral-800 hover:border-neutral-500 hover:bg-neutral-900/90 transition-colors duration-300 flex flex-col justify-between group rounded-xl shadow-lg h-full overflow-hidden"
-                  >
-                    <div style={{ transform: "translateZ(30px)" }} className="font-bold text-neutral-300 group-hover:text-white transition-colors duration-200">{cert}</div>
-                    <div style={{ transform: "translateZ(20px)" }} className="mt-8 flex items-center justify-between transition-transform duration-200">
-                      <span className="text-[10px] text-neutral-500 font-mono tracking-widest uppercase group-hover:text-neutral-400">Verified Badge</span>
-                      <div className="h-2 w-2 rounded-full bg-blue-500 group-hover:shadow-[0_0_12px_rgba(59,130,246,1)] transition-all"></div>
-                    </div>
-                  </TiltCard>
-                ))}
+                {filteredCredentials.map((cert, index) => {
+                  const isGoogle = cert.issuer === "Google";
+                  const isIBM = cert.issuer === "IBM";
+                  const isGithub = cert.issuer === "GitHub";
+                  const isAWS = cert.issuer === "AWS";
+
+                  const badgeBorder = isGoogle 
+                    ? "border-blue-500/30 text-blue-400 bg-blue-500/10" 
+                    : isIBM 
+                    ? "border-indigo-500/30 text-indigo-400 bg-indigo-500/10" 
+                    : isAWS
+                    ? "border-orange-500/30 text-orange-400 bg-orange-500/10"
+                    : "border-purple-500/30 text-purple-400 bg-purple-500/10";
+
+                  const glareColor = isGoogle 
+                    ? "rgba(59,130,246,0.18)" 
+                    : isIBM 
+                    ? "rgba(99,102,241,0.18)" 
+                    : isAWS
+                    ? "rgba(249,115,22,0.18)"
+                    : "rgba(168,85,247,0.18)";
+
+                  return (
+                    <TiltCard 
+                      key={`${cert.title}-${index}`} 
+                      tiltAmount={10} 
+                      glareColor={glareColor}
+                      onMouseEnter={() => setIsHovering(true)} 
+                      onMouseLeave={() => setIsHovering(false)}
+                      className="p-6 bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-500 hover:bg-neutral-900/95 transition-all duration-300 flex flex-col justify-between group rounded-2xl shadow-xl h-full min-h-[200px] relative overflow-hidden"
+                    >
+                      {/* === GLASSMORPHISM CORNER BADGE === */}
+                      <div className="absolute top-0 right-0 z-0" style={{ transform: "translateZ(10px)" }}>
+                        {/* Ambient Glow Behind Badge */}
+                        <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-30 group-hover:opacity-60 transition-opacity duration-500 ${
+                          isGoogle ? 'bg-blue-500' : 
+                          isIBM ? 'bg-indigo-500' : 
+                          isAWS ? 'bg-orange-500' : 
+                          'bg-purple-500'
+                        }`} />
+                        
+                        {/* Physical Curved Badge */}
+                        <div className={`relative flex items-center justify-center w-16 h-16 rounded-bl-[2rem] border-b border-l backdrop-blur-md transition-all duration-500 ${
+                          isGoogle ? 'bg-blue-500/10 border-blue-500/20 group-hover:bg-blue-500/20 group-hover:border-blue-500/40' : 
+                          isIBM ? 'bg-indigo-500/10 border-indigo-500/20 group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40' : 
+                          isAWS ? 'bg-orange-500/10 border-orange-500/20 group-hover:bg-orange-500/20 group-hover:border-orange-500/40' :
+                          'bg-purple-500/10 border-purple-500/20 group-hover:bg-purple-500/20 group-hover:border-purple-500/40'
+                        }`}>
+                          {/* Official Logos */}
+                          {isGoogle && (
+                            <svg viewBox="0 0 24 24" className="w-6 h-6 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]" fill="currentColor">
+                              <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866.549 3.921 1.453l2.814-2.814C17.503 2.988 15.139 2 12.545 2 7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.428-.013z"/>
+                            </svg>
+                          )}
+                          {isIBM && (
+                            <svg viewBox="0 0 24 24" className="w-8 h-8 text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.8)]" fill="currentColor">
+                              <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontSize="12" fontWeight="bold" letterSpacing="-0.5">IBM</text>
+                            </svg>
+                          )}
+                         {isAWS && (
+                            <svg viewBox="0 0 24 24" className="w-8 h-8 text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.8)]" fill="currentColor">
+                              <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fontFamily="sans-serif" fontSize="11" fontWeight="900" letterSpacing="-0.5">AWS</text>
+                            </svg>
+                          )}
+                          {isGithub && (
+                             <svg viewBox="0 0 24 24" className="w-6 h-6 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]" fill="currentColor">
+                               <path d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"/>
+                             </svg>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="relative z-10 flex flex-col h-full">
+                        {/* TAG */}
+                        <div className="flex items-start mb-5" style={{ transform: "translateZ(25px)" }}>
+                          <span className={`text-[9px] font-mono tracking-[0.2em] uppercase px-2.5 py-1 rounded-md border ${badgeBorder}`}>
+                            {cert.category}
+                          </span>
+                        </div>
+
+                        {/* TITLE */}
+                        <div 
+                          style={{ transform: "translateZ(35px)" }} 
+                          className="font-bold text-lg md:text-xl text-neutral-200 group-hover:text-white transition-colors duration-200 leading-tight pr-8 flex-1"
+                        >
+                          {cert.title}
+                        </div>
+
+                        {/* FOOTER: CREDENTIAL ID / STATUS */}
+                        <div 
+                          style={{ transform: "translateZ(20px)" }} 
+                          className="mt-6 pt-4 border-t border-neutral-900/50 flex items-center justify-between text-[11px] font-mono"
+                        >
+                          {cert.id ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-neutral-500 text-[10px] uppercase tracking-widest">ID:</span>
+                              <span className="text-neutral-300 tracking-wider bg-neutral-900 border border-neutral-800 px-2 py-0.5 rounded">
+                                {cert.id}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-1.5 text-neutral-500">
+                              <span className="w-1 h-1 rounded-full bg-neutral-600" />
+                              <span className="text-[10px] tracking-widest uppercase">Verified Completion</span>
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] text-neutral-500 tracking-widest uppercase group-hover:text-neutral-400">
+                              Active
+                            </span>
+                            <div className={`h-2 w-2 rounded-full ${
+                              isGoogle ? 'bg-blue-400 group-hover:shadow-[0_0_10px_rgba(96,165,250,0.9)]' : 
+                              isIBM ? 'bg-indigo-400 group-hover:shadow-[0_0_10px_rgba(129,140,248,0.9)]' : 
+                              isAWS ? 'bg-orange-400 group-hover:shadow-[0_0_10px_rgba(251,146,60,0.9)]' :
+                              'bg-purple-400 group-hover:shadow-[0_0_10px_rgba(192,132,252,0.9)]'
+                            } transition-all`} />
+                          </div>
+                        </div>
+                      </div>
+                    </TiltCard>
+                  );
+                })}
               </div>
             </motion.div>
           </section>
@@ -528,7 +638,7 @@ export default function Home() {
                 <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.4 }} variants={scrollReveal} className="relative pl-8 md:pl-0">
                   <div className="md:hidden absolute left-0 top-0 bottom-0 w-px bg-neutral-800"></div>
                   <div className="md:grid md:grid-cols-12 gap-8 items-start group">
-                    <div className="md:col-span-3 md:text-right pt-1"><span className="text-sm font-bold text-neutral-500 uppercase tracking-wider group-hover:text-blue-400 transition-colors">6-Month Project</span></div>
+                    <div className="md:col-span-3 md:text-right pt-1"><span className="text-sm font-bold text-neutral-500 uppercase tracking-wider group-hover:text-blue-400 transition-colors">8-Month Project</span></div>
                     <div className="md:col-span-1 hidden md:flex justify-center relative">
                       <div className="absolute top-0 bottom-[-4rem] w-px bg-neutral-800 group-hover:bg-neutral-600 transition-colors"></div>
                       <div className="w-3 h-3 rounded-full bg-neutral-700 border-2 border-neutral-950 relative z-10 mt-1.5 group-hover:bg-blue-400 group-hover:scale-150 transition-all duration-300"></div>
@@ -550,7 +660,7 @@ export default function Home() {
                       <div className="w-3 h-3 rounded-full bg-neutral-700 border-2 border-neutral-950 relative z-10 mt-1.5 group-hover:bg-blue-400 group-hover:scale-150 transition-all duration-300"></div>
                     </div>
                     <div className="md:col-span-8 pb-8">
-                      <h4 className="text-2xl font-bold text-white mb-1">Technical Project Manager</h4>
+                      <h4 className="text-2xl font-bold text-white mb-1">Technical Project Manager & Automation Lead Developer</h4>
                       <h5 className="text-lg font-medium text-blue-400 mb-4">UGL Dispatch</h5>
                       <p className="text-neutral-400 leading-relaxed">Spearheaded cross-functional teams to align software development lifecycles with strategic operational goals, ensuring highly efficient project delivery across logistics platforms.</p>
                     </div>
@@ -560,7 +670,7 @@ export default function Home() {
                 <motion.div initial="hidden" whileInView="show" viewport={{ once: false, amount: 0.4 }} variants={scrollReveal} className="relative pl-8 md:pl-0">
                   <div className="md:hidden absolute left-0 top-0 bottom-0 w-px bg-neutral-800"></div>
                   <div className="md:grid md:grid-cols-12 gap-8 items-start group">
-                    <div className="md:col-span-3 md:text-right pt-1"><span className="text-sm font-bold text-neutral-500 uppercase tracking-wider group-hover:text-blue-400 transition-colors">Aug '24 — Aug '25</span></div>
+                    <div className="md:col-span-3 md:text-right pt-1"><span className="text-sm font-bold text-neutral-500 uppercase tracking-wider group-hover:text-blue-400 transition-colors">JAN '24 — Aug '25</span></div>
                     <div className="md:col-span-1 hidden md:flex justify-center relative">
                       <div className="absolute top-0 bottom-[-4rem] w-px bg-neutral-800 group-hover:bg-neutral-600 transition-colors"></div>
                       <div className="w-3 h-3 rounded-full bg-neutral-700 border-2 border-neutral-950 relative z-10 mt-1.5 group-hover:bg-blue-400 group-hover:scale-150 transition-all duration-300"></div>
@@ -617,7 +727,7 @@ export default function Home() {
               </div>
 
               <div className="border-t border-neutral-200 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Amman, Jordan • GMT+3</div>
+                <div className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Khobar , KSA</div>
                 <div className="flex gap-8 text-sm font-bold tracking-widest text-neutral-900 uppercase">
                   <a href="https://jo.linkedin.com/in/ahmad-alkhouja-224488315" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>LinkedIn</a>
                   <a href="https://github.com/C9AK" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>GitHub</a>
