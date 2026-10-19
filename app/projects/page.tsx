@@ -181,8 +181,8 @@ const projects = [
     desc: "Architected a secure, enterprise-grade onboarding portal designed to eliminate friction in driver and operational deployments. Engineered a rigorous Role-Based Access Control (RBAC) matrix from the ground up, enforcing precise data compartmentalization and secure routing across administrative, dispatch, and driver tiers.\n\nBeyond the complex backend orchestration—which features real-time state synchronization, secure credential vaulting, and automated compliance tracking—the platform was built with a relentless focus on front-end aesthetics. It delivers a premium, high-fidelity UI/UX that transforms dense corporate workflows into a seamless, consumer-grade digital experience.",
     side: "right",
    images: [
-      "/ONBOARDING1.png", // Clinical Chat & Offline Search
-      "/ONBOARDING2.png", 
+      "/onboarding1.png", // Clinical Chat & Offline Search
+      "/onboarding2.png", 
       "/onboarding3.png" // Medication Interaction Profile Dashboard
     ]
   }
